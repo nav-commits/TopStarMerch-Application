@@ -32,7 +32,7 @@ const Products = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    fetch("http://localhost:8082/Products")
+    fetch("http://localhost:8082/ProductInfo")
       .then((response) => {
         if (!response.ok) {
           throw Error("could not fetch data for that resource");
@@ -44,7 +44,7 @@ const Products = () => {
         setTimeout(() => {
           setProducts(data);
           setLoading(false);
-        }, 2000);
+        }, 1000);
         setError(null);
       })
       .catch((err) => {
