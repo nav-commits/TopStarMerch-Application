@@ -16,6 +16,31 @@ import {
 const ProductDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const transaction = {
+    userid: 1,
+    imageurl: location.state.productimage,
+    productname: location.state.productname,
+    quantity: location.state.productquantity,
+    price : location.state.productprice ,
+    productid: location.state.productid
+  }
+
+ const handleSubmit = ()=>{
+   fetch(`http://localhost:8083/Transactions/${transaction.userid}/${location.state.productid}`, {
+     method: 'POST',
+     headers: {"Content-Type": "application/json"},
+     body: JSON.stringify(transaction)
+
+   }).then(()=>{
+     console.log("post request sent")
+   })
+   .catch((error)=>{
+     console.log(error)
+   })
+   navigate("/TransactionDetails");
+ }
+
   return (
     <React.Fragment>
       <Typography variant="h5" style={{ marginTop: "40px" }}>
@@ -70,9 +95,7 @@ const ProductDetails = () => {
                 style={{ backgroundColor: "darkred", color: "white" }}
                 variant="contained"
                 size="small"
-                onClick={() => {
-                  navigate("/TransactionDetails");
-                }}
+                onClick={handleSubmit}
               >
                 Buy Now
               </Button>

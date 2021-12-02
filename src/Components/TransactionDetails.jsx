@@ -6,27 +6,38 @@ import {
   Card,
   CardContent,
   Button,
+  CardMedia,
 } from "@material-ui/core/";
 import { useState } from "react";
 import Alert from "@material-ui/lab/Alert";
 import { useNavigate } from "react-router-dom";
 
 const TransactionDetails = () => {
-  const [transactions,setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-
   const transactionDetails = () => {
-    fetch("http://localhost:8083/Transactions/1")
+    fetch("http://localhost:8083/Transaction/1")
       .then((response) => {
+        if (!response.ok) {
+          throw Error("could not fetch data for that resource");
+        }
         return response.json();
       })
       .then((data) => {
+        setTimeout(() => {
+          setSuccess(true);
+          setTransactions(data);
+        }, 1000);
         console.log(data);
-        setTransactions(data)
+        setError(null);
       })
       .catch((err) => {
+        setError(err.message);
         console.log(err);
+        setSuccess(false);
       });
   };
 
@@ -35,17 +46,25 @@ const TransactionDetails = () => {
   }, []);
   return (
     <React.Fragment>
-      <Grid container direction="row" justifyContent="center">
-        <Grid item xs={3}>
-          <Alert
-            variant="outlined"
-            style={{ marginTop: "90px" }}
-            severity="success"
-          >
-            Product Purchased!
-          </Alert>
+      {success && (
+        <Grid container direction="row" justifyContent="center">
+          <Grid item xs={3}>
+            <Alert
+              variant="outlined"
+              style={{ marginTop: "90px" }}
+              severity="success"
+            >
+              Product Purchased!
+            </Alert>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
+
+      {error && (
+        <Typography variant="h4" align="center" style={{ marginTop: "40px" }}>
+          {error}
+        </Typography>
+      )}
 
       <Grid container direction="row" justifyContent="flex-start">
         <Grid item xs={1}>
@@ -73,9 +92,10 @@ const TransactionDetails = () => {
         justifyContent="center"
         style={{ marginLeft: "2px", marginTop: "40px" }}
       >
-        {transactions.filter((i, index) => (index < 1)).map((transaction, index) => (
+        {transactions.map((transaction, index) => (
           <Grid item xs={3}>
-            <Card style={{ height: "250px" }} key={index}>
+            <Card style={{ height: "590px" }} key={index}>
+            <CardMedia image={transaction.imageurl} style={{ height: "250px" }} />
               <Typography variant="h5">Transaction Details</Typography>
               <CardContent>
                 <Typography align="left" variant="h6" gutterBottom>
@@ -85,11 +105,21 @@ const TransactionDetails = () => {
                   Price: {transaction.price}
                 </Typography>
                 <Typography align="left" variant="h6" gutterBottom>
-                  Quantity:  {transaction.quantity}
+                  Quantity: {transaction.quantity}
                 </Typography>
                 <Typography align="left" variant="h6" gutterBottom>
                   productid: {transaction.productid}
                 </Typography>
+                <Typography align="left" variant="h6" gutterBottom>
+                  userid: {transaction.userid}
+                </Typography>
+                <Typography align="left" variant="h6" gutterBottom>
+                  createdAt: {transaction.createdAt}
+                </Typography>
+                <Typography align="left" variant="h6" gutterBottom>
+                  transactionid: {transaction.transactionid}
+                </Typography>
+
               </CardContent>
             </Card>
           </Grid>
