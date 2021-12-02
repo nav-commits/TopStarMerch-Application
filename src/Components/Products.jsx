@@ -32,7 +32,7 @@ const Products = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    fetch("http://localhost:8082/ProductInfo")
+    fetch("http://localhost:8082/ProductInfo/1")
       .then((response) => {
         if (!response.ok) {
           throw Error("could not fetch data for that resource");
@@ -127,7 +127,7 @@ const Products = () => {
                         productname: product.productname,
                         productimage: product.imageurl,
                         productquantity: product.quantity,
-                        productprice :product.price
+                        productprice :product.price,
                       },
                     });
                   }}
