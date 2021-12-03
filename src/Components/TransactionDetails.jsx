@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import Alert from "@material-ui/lab/Alert";
 import { useNavigate } from "react-router-dom";
+import dayjs from 'dayjs';
 
 const TransactionDetails = () => {
   const [transactions, setTransactions] = useState([]);
@@ -30,9 +31,13 @@ const TransactionDetails = () => {
         setTimeout(() => {
           setSuccess(true);
           setTransactions(data);
+          setError(null);
         }, 1000);
         console.log(data);
-        setError(null);
+
+        setTimeout(() => {
+          setSuccess(false);
+        }, 4000);
       })
       .catch((err) => {
         setError(err.message);
@@ -40,32 +45,12 @@ const TransactionDetails = () => {
         setSuccess(false);
       });
   };
-
+ 
   React.useEffect(() => {
     transactionDetails();
   }, []);
   return (
     <React.Fragment>
-      {success && (
-        <Grid container direction="row" justifyContent="center">
-          <Grid item xs={3}>
-            <Alert
-              variant="outlined"
-              style={{ marginTop: "90px" }}
-              severity="success"
-            >
-              Product Purchased!
-            </Alert>
-          </Grid>
-        </Grid>
-      )}
-
-      {error && (
-        <Typography variant="h4" align="center" style={{ marginTop: "40px" }}>
-          {error}
-        </Typography>
-      )}
-
       <Grid container direction="row" justifyContent="flex-start">
         <Grid item xs={1}>
           <Button
@@ -85,6 +70,26 @@ const TransactionDetails = () => {
         </Grid>
       </Grid>
 
+      {success && (
+        <Grid container direction="row" justifyContent="center">
+          <Grid item xs={3}>
+            <Alert
+              variant="outlined"
+              style={{ marginTop: "20px" }}
+              severity="success"
+            >
+              Product Purchased!
+            </Alert>
+          </Grid>
+        </Grid>
+      )}
+
+      {error && (
+        <Typography variant="h4" align="center" style={{ marginTop: "40px" }}>
+          {error}
+        </Typography>
+      )}
+
       <Grid
         container
         spacing={4}
@@ -94,8 +99,11 @@ const TransactionDetails = () => {
       >
         {transactions.map((transaction, index) => (
           <Grid item xs={3}>
-            <Card style={{ height: "590px" }} key={index}>
-            <CardMedia image={transaction.imageurl} style={{ height: "250px" }} />
+            <Card style={{ height: "490px" }} key={index}>
+              <CardMedia
+                image={transaction.imageurl}
+                style={{ height: "250px" }}
+              />
               <Typography variant="h5">Transaction Details</Typography>
               <CardContent>
                 <Typography align="left" variant="h6" gutterBottom>
@@ -108,18 +116,8 @@ const TransactionDetails = () => {
                   Quantity: {transaction.quantity}
                 </Typography>
                 <Typography align="left" variant="h6" gutterBottom>
-                  productid: {transaction.productid}
+                  TransactionCreation: {dayjs(transaction.createdAt).format("ddd, MMM D, YYYY h:mm A")}
                 </Typography>
-                <Typography align="left" variant="h6" gutterBottom>
-                  userid: {transaction.userid}
-                </Typography>
-                <Typography align="left" variant="h6" gutterBottom>
-                  createdAt: {transaction.createdAt}
-                </Typography>
-                <Typography align="left" variant="h6" gutterBottom>
-                  transactionid: {transaction.transactionid}
-                </Typography>
-
               </CardContent>
             </Card>
           </Grid>
