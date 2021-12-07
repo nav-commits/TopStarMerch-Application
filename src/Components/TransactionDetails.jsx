@@ -20,7 +20,7 @@ const TransactionDetails = () => {
   const navigate = useNavigate();
 
   const transactionDetails = () => {
-    fetch("http://localhost:8083/Transaction/1")
+    fetch("http://localhost:8081/Transaction/1")
       .then((response) => {
         if (!response.ok) {
           throw Error("could not fetch data for that resource");
@@ -116,7 +116,7 @@ const TransactionDetails = () => {
                   Quantity: {transaction.quantity}
                 </Typography>
                 <Typography align="left" variant="h6" gutterBottom>
-                  TransactionCreation: {dayjs(transaction.createdAt).format("ddd, MMM D, YYYY h:mm A")}
+                  TransactionCreated: {dayjs(transaction.createdAt).format("ddd, MMM D, YYYY h:mm A")}
                 </Typography>
               </CardContent>
             </Card>

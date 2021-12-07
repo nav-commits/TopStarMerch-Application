@@ -27,7 +27,7 @@ const ProductDetails = () => {
   }
 
  const handleSubmit = ()=>{
-   fetch(`http://localhost:8083/Transactions/${transaction.userid}/${location.state.productid}`, {
+   fetch(`http://localhost:8081/Transactions/${transaction.userid}/${location.state.productid}`, {
      method: 'POST',
      headers: {"Content-Type": "application/json"},
      body: JSON.stringify(transaction)
