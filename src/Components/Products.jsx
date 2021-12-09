@@ -31,6 +31,12 @@ const Products = () => {
   const [value, setValue] = useState("");
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
+  const btnstyle = { margin: "10px 0", backgroundColor: "darkred", marginRight:'40px' };
+
   React.useEffect(() => {
     fetch("http://localhost:8082/ProductInfo/1")
       .then((response) => {
@@ -64,6 +70,26 @@ const Products = () => {
   }, [value, products]);
   return (
     <React.Fragment>
+      <Grid
+      spacing={3}
+        container
+        direction="row"
+        justify="flex-end"
+        alignItems="flex-end"
+      >
+        <Grid item xs={1}>
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            fullWidth
+            onClick={handleLogout}
+            style={btnstyle}
+          >
+            Logout
+          </Button>
+        </Grid>
+      </Grid>
       <Box
         sx={{
           width: 800,
@@ -127,7 +153,7 @@ const Products = () => {
                         productname: product.productname,
                         productimage: product.imageurl,
                         productquantity: product.quantity,
-                        productprice :product.price,
+                        productprice: product.price,
                       },
                     });
                   }}
