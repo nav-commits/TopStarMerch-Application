@@ -14,6 +14,8 @@ import {
   TextField,
 } from "@material-ui/core/";
 import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../Context/LoginContext";
+import { useContext } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,12 +32,17 @@ const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [value, setValue] = useState("");
   const navigate = useNavigate();
+  // const [setUsername, setPassword, username] = useContext(LoginContext);
 
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
   };
-  const btnstyle = { margin: "10px 0", backgroundColor: "darkred", marginRight:'40px' };
+  const btnstyle = {
+    margin: "10px 0",
+    backgroundColor: "darkred",
+    marginRight: "40px",
+  };
 
   React.useEffect(() => {
     fetch("http://localhost:8082/ProductInfo/1")
@@ -71,7 +78,7 @@ const Products = () => {
   return (
     <React.Fragment>
       <Grid
-      spacing={3}
+        spacing={3}
         container
         direction="row"
         justify="flex-end"

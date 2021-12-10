@@ -2,9 +2,11 @@ import "../App.css";
 import * as React from "react";
 import { AppBar, Box, Typography, Toolbar } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import { LoginContext } from "../Context/LoginContext";
+import { useContext } from "react";
 
 const TopBar = () => {
-  const userName = "nav_thebio";
+  const [username] = useContext(LoginContext);
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>
@@ -13,7 +15,7 @@ const TopBar = () => {
             <Typography variant="h6">TopStarMerch</Typography>
             <div style={{ display: "flex", marginLeft: "auto" }}>
               <Typography>
-                {userName === "nav_thebi" ? userName : null}
+                {username ? username: null}
               </Typography>{" "}
               <AccountCircle style={{ marginLeft: "10px" }} />
             </div>
