@@ -1,5 +1,5 @@
 import "../App.css";
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Paper,
@@ -16,35 +16,45 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-const [username,setUsername,password,setPassword,] = useContext(LoginContext);
-const navigate = useNavigate();
+  const [username, setUsername] = useContext(LoginContext);
+  const navigate = useNavigate();
+  const [localStateUserName, setLocalStateUserName] = useState("");
+  const [password, setPassword] = useState("");
 
-const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
+  
     e.preventDefault();
-    const login = { username, password};
-
+    const login = { username:localStateUserName, password:password };
     axios({
       method: "POST",
       url: "http://localhost:8086/signin",
       data: login,
       headers: { "Content-Type": "application/json" },
     })
-      .then(function (res) {
-      localStorage.setItem("authorization", res.data.token);
-      if (res.data) {
-        navigate("/Products");
-      } else {
-        alert("Authentication failure");
-      }
+      .then(function (response) {
+          
+        setUsername(response.data.username)
+
+        // store the user in localStorage
+        localStorage.setItem("user", response.data.username);
+
+        // stores the jwt in local storage
+        localStorage.setItem(
+          "authorization",
+          JSON.stringify(response.data.jwt)
+        );
+
+        if (response.data.jwt) {
+          navigate("/Products");
+        } else {
+          alert("Authentication failure");
+        }
       })
       .catch(function (err) {
         console.log(err);
       });
 
-      setUsername('')
-      setPassword('')  
   };
-
 
   const paperStyle = {
     padding: 20,
@@ -56,26 +66,27 @@ const handleSubmit = (e) => {
   const btnstyle = { margin: "20px 0", backgroundColor: "darkred" };
   return (
     <React.Fragment>
-
       <Typography style={{ marginTop: "80px" }} variant="h3">
-       Please Login!
+        Please Login!
       </Typography>
-
+      
       <Grid>
         <Paper elevation={10} style={paperStyle}>
           <Grid align="center">
             <Avatar style={avatarStyle}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography style={{marginTop:'10px'}} variant="h5">Login</Typography>
+            <Typography style={{ marginTop: "10px" }} variant="h5">
+              Login
+            </Typography>
           </Grid>
           <TextField
             label="Username"
             placeholder="Enter username"
             fullWidth
             required
-            value={username}
-            onChange={(e)=> setUsername(e.target.value)}
+            value={localStateUserName}
+            onChange={(e) => setLocalStateUserName(e.target.value)}
           />
           <TextField
             label="Password"
@@ -84,8 +95,8 @@ const handleSubmit = (e) => {
             fullWidth
             required
             value={password}
-            onChange={(e)=> setPassword(e.target.value)}
-            />
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <Button
             type="submit"
             color="primary"
@@ -96,7 +107,6 @@ const handleSubmit = (e) => {
           >
             Login
           </Button>
-         
         </Paper>
       </Grid>
     </React.Fragment>
