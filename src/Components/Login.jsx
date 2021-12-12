@@ -1,5 +1,5 @@
 import "../App.css";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Grid,
   Paper,
@@ -22,7 +22,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
-  
     e.preventDefault();
     const login = { username:localStateUserName, password:password };
     axios({
@@ -33,11 +32,11 @@ const Login = () => {
     })
       .then(function (response) {
           
-        setUsername(response.data.username)
-
-        // store the user in localStorage
+        // store the user in localStorage and State
         localStorage.setItem("user", response.data.username);
-
+        const getUser = localStorage.getItem("user");
+        setUsername(getUser)
+        
         // stores the jwt in local storage
         localStorage.setItem(
           "authorization",
@@ -55,6 +54,12 @@ const Login = () => {
       });
 
   };
+
+  useEffect(() => {
+   setUsername(username)
+  }, [username]);
+ 
+
 
   const paperStyle = {
     padding: 20,
