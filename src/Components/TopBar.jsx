@@ -1,12 +1,13 @@
 import "../App.css";
-import * as React from "react";
+import React, { useState,useEffect } from "react";
 import { AppBar, Box, Typography, Toolbar } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { LoginContext } from "../Context/LoginContext";
 import { useContext } from "react";
 
 const TopBar = () => {
-  const [username] = useContext(LoginContext);
+  const [username,setUsername] = useContext(LoginContext);
+
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>

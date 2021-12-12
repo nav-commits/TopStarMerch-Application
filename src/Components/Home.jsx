@@ -39,21 +39,22 @@ const Home = () => {
     })
       .then(function (response) {
         console.log(response.data);
-        console.log(response);
+        console.log(response.data.userid);
       })
       .catch(function (err) {
-        console.log(err);
+        console.log();
       });
 
-      navigate("/Login");
-
-      setContact('')
-      setAddress('')
-      setUsername('')
-      setPassword('')
-      
+    navigate("/Login");
   };
-  
+
+  const enabled =
+    username.length > 0 &&
+    password.length > 0 &&
+    address.length > 0 &&
+    contact.length > 0;
+
+
   const paperStyle = {
     padding: 20,
     height: "40vh",
@@ -84,7 +85,7 @@ const Home = () => {
             fullWidth
             required
             value={username}
-            onChange={(e)=> setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             label="Password"
@@ -93,7 +94,7 @@ const Home = () => {
             fullWidth
             required
             value={password}
-            onChange={(e)=> setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <TextField
             label="Address"
@@ -101,7 +102,7 @@ const Home = () => {
             fullWidth
             required
             value={address}
-            onChange={(e)=> setAddress(e.target.value)}
+            onChange={(e) => setAddress(e.target.value)}
           />
           <TextField
             label="Contact Number"
@@ -109,7 +110,7 @@ const Home = () => {
             fullWidth
             required
             value={contact}
-            onChange={(e)=> setContact(e.target.value)}
+            onChange={(e) => setContact(e.target.value)}
           />
           <Button
             type="submit"
@@ -118,6 +119,7 @@ const Home = () => {
             style={btnstyle}
             fullWidth
             onClick={handleSubmit}
+            disabled={!enabled}
           >
             Register
           </Button>
