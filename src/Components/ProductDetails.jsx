@@ -19,21 +19,19 @@ const ProductDetails = () => {
 
   const transaction = {
     userid: 1,
-    imageurl: location.state.productimage,
-    productname: location.state.productname,
-    quantity: location.state.productquantity,
-    price : location.state.productprice ,
     productid: location.state.productid
   }
+  console.log(transaction.productid)
+  console.log(transaction.userid)
 
  const handleSubmit = ()=>{
-   fetch(`http://localhost:8081/Transactions/${transaction.userid}/${location.state.productid}`, {
+  fetch(`http://localhost:8100/Transactions/${transaction.userid}/${location.state.productid}`, {
      method: 'POST',
      headers: {"Content-Type": "application/json"},
      body: JSON.stringify(transaction)
 
-   }).then(()=>{
-     console.log("post request sent")
+   }).then((response)=>{
+     console.log(response)
    })
    .catch((error)=>{
      console.log(error)

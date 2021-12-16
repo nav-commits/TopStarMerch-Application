@@ -1,12 +1,12 @@
 import "../App.css";
-import React, { useState,useEffect } from "react";
+import React from "react";
 import { AppBar, Box, Typography, Toolbar } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import { LoginContext } from "../Context/LoginContext";
 import { useContext } from "react";
 
 const TopBar = () => {
-  const [username,setUsername] = useContext(LoginContext);
+  const [username] = useContext(LoginContext);
 
   return (
     <React.Fragment>

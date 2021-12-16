@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import Alert from "@material-ui/lab/Alert";
 import { useNavigate } from "react-router-dom";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 const TransactionDetails = () => {
   const [transactions, setTransactions] = useState([]);
@@ -20,7 +20,8 @@ const TransactionDetails = () => {
   const navigate = useNavigate();
 
   const transactionDetails = () => {
-    fetch("http://localhost:8081/Transaction/1")
+    const userid = 1;
+    fetch(`http://localhost:8100/Transaction/${userid}`)
       .then((response) => {
         if (!response.ok) {
           throw Error("could not fetch data for that resource");
@@ -45,10 +46,11 @@ const TransactionDetails = () => {
         setSuccess(false);
       });
   };
- 
+
   React.useEffect(() => {
     transactionDetails();
   }, []);
+  
   return (
     <React.Fragment>
       <Grid container direction="row" justifyContent="flex-start">
@@ -97,31 +99,36 @@ const TransactionDetails = () => {
         justifyContent="center"
         style={{ marginLeft: "2px", marginTop: "40px" }}
       >
-        {transactions.map((transaction, index) => (
-          <Grid item xs={3}>
-            <Card style={{ height: "490px" }} key={index}>
-              <CardMedia
-                image={transaction.imageurl}
-                style={{ height: "250px" }}
-              />
-              <Typography variant="h5">Transaction Details</Typography>
-              <CardContent>
-                <Typography align="left" variant="h6" gutterBottom>
-                  ProductName:{transaction.productname}
-                </Typography>
-                <Typography align="left" variant="h6" gutterBottom>
-                  Price: {transaction.price}
-                </Typography>
-                <Typography align="left" variant="h6" gutterBottom>
-                  Quantity: {transaction.quantity}
-                </Typography>
-                <Typography align="left" variant="h6" gutterBottom>
-                  TransactionCreated: {dayjs(transaction.createdAt).format("ddd, MMM D, YYYY h:mm A")}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+        {transactions.length > 0
+          ? transactions.map((transaction, index) => (
+              <Grid item xs={3}>
+                <Card style={{ height: "490px" }} key={index}>
+                  <CardMedia
+                    image={transaction.imageurl}
+                    style={{ height: "250px" }}
+                  />
+                  <Typography variant="h5">Transaction Details</Typography>
+                  <CardContent>
+                    <Typography align="left" variant="h6" gutterBottom>
+                      ProductName:{transaction.productname}
+                    </Typography>
+                    <Typography align="left" variant="h6" gutterBottom>
+                      Price: {transaction.price}
+                    </Typography>
+                    <Typography align="left" variant="h6" gutterBottom>
+                      Quantity: {transaction.quantity}
+                    </Typography>
+                    <Typography align="left" variant="h6" gutterBottom>
+                      TransactionCreated:{" "}
+                      {dayjs(transaction.createdAt).format(
+                        "ddd, MMM D, YYYY h:mm A"
+                      )}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
+          : <Typography>No Products purchased</Typography>}
       </Grid>
     </React.Fragment>
   );
