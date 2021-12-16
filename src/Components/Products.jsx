@@ -1,7 +1,6 @@
 import "../App.css";
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
   Card,
@@ -14,25 +13,15 @@ import {
   TextField,
 } from "@material-ui/core/";
 import { useNavigate } from "react-router-dom";
-import { LoginContext } from "../Context/LoginContext";
-import { useContext } from "react";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
-  },
-}));
 
 const Products = () => {
-  const classes = useStyles();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [value, setValue] = useState("");
   const navigate = useNavigate();
-  // const [setUsername, setPassword, username] = useContext(LoginContext);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -45,7 +34,7 @@ const Products = () => {
   };
 
   React.useEffect(() => {
-    fetch("http://localhost:8082/ProductInfo/1")
+    fetch("http://localhost:8088/ProductInfo")
       .then((response) => {
         if (!response.ok) {
           throw Error("could not fetch data for that resource");

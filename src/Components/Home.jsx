@@ -33,7 +33,7 @@ const Home = () => {
 
     axios({
       method: "POST",
-      url: "http://localhost:8086/signup",
+      url: "http://localhost:8072/signup",
       data: register,
       headers: { "Content-Type": "application/json" },
     })
@@ -46,6 +46,10 @@ const Home = () => {
       });
 
     navigate("/Login");
+    setUsername('')
+    setPassword('')
+    setContact('')
+    setAddress('')
   };
 
   const enabled =

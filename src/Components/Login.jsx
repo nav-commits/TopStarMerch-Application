@@ -6,8 +6,7 @@ import {
   Avatar,
   TextField,
   Button,
-  Typography,
-  Link,
+  Typography
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { LoginContext } from "../Context/LoginContext";
@@ -26,7 +25,7 @@ const Login = () => {
     const login = { username:localStateUserName, password:password };
     axios({
       method: "POST",
-      url: "http://localhost:8086/signin",
+      url: "http://localhost:8072/signin",
       data: login,
       headers: { "Content-Type": "application/json" },
     })
@@ -57,7 +56,7 @@ const Login = () => {
 
   useEffect(() => {
    setUsername(username)
-  }, [username]);
+  }, []);
  
 
 
