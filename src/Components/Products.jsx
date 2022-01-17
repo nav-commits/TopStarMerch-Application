@@ -13,7 +13,7 @@ import {
   TextField,
 } from "@material-ui/core/";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -22,41 +22,38 @@ const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [value, setValue] = useState("");
   const navigate = useNavigate();
+  const {getAccessTokenSilently,user } = useAuth0();
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/");
-  };
-  const btnstyle = {
-    margin: "10px 0",
-    backgroundColor: "darkred",
-    marginRight: "40px",
-  };
+  console.log(user)
 
   React.useEffect(() => {
-    fetch("http://localhost:8088/ProductInfo")
-      .then((response) => {
-        if (!response.ok) {
-          throw Error("could not fetch data for that resource");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
+    const callSecureApi = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+
+        const response = await fetch("http://localhost:8500/ProductInfo", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const responseData = await response.json();
+        console.log(responseData)
         setTimeout(() => {
-          setProducts(data);
+          setProducts(responseData);
           setLoading(false);
         }, 1000);
         setError(null);
-      })
-      .catch((err) => {
-        setError(err.message);
-        console.log(err);
+      } catch (error) {
+        setError(error.message);
+        console.log(error);
         setLoading(false);
         setProducts([]);
-      });
+      }
+    };
+    callSecureApi();
   }, []);
-
+  
   useEffect(() => {
     setFilteredProducts(
       products.filter((product) =>
@@ -66,26 +63,7 @@ const Products = () => {
   }, [value, products]);
   return (
     <React.Fragment>
-      <Grid
-        spacing={3}
-        container
-        direction="row"
-        justify="flex-end"
-        alignItems="flex-end"
-      >
-        <Grid item xs={1}>
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            fullWidth
-            onClick={handleLogout}
-            style={btnstyle}
-          >
-            Logout
-          </Button>
-        </Grid>
-      </Grid>
+
       <Box
         sx={{
           width: 800,

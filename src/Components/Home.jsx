@@ -1,141 +1,23 @@
 import "../App.css";
-import {
-  Grid,
-  Paper,
-  Avatar,
-  TextField,
-  Button,
-  Typography,
-  Link,
-} from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { RegisterContext } from "../Context/RegisterContext";
-import React, { useContext } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-
+import { Typography, Button } from "@material-ui/core";
+import React from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 const Home = () => {
-  const [
-    username,
-    setUsername,
-    password,
-    setPassword,
-    address,
-    setAddress,
-    contact,
-    setContact,
-  ] = useContext(RegisterContext);
-  const navigate = useNavigate();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const register = { username, password, address, contact };
-
-    axios({
-      method: "POST",
-      url: "http://localhost:8072/signup",
-      data: register,
-      headers: { "Content-Type": "application/json" },
-    })
-      .then(function (response) {
-        console.log(response.data);
-        console.log(response.data.userid);
-      })
-      .catch(function (err) {
-        console.log();
-      });
-
-    navigate("/Login");
-    setUsername('')
-    setPassword('')
-    setContact('')
-    setAddress('')
-  };
-
-  const enabled =
-    username.length > 0 &&
-    password.length > 0 &&
-    address.length > 0 &&
-    contact.length > 0;
-
-
-  const paperStyle = {
-    padding: 20,
-    height: "40vh",
-    width: 350,
-    margin: "30px auto",
-  };
-  const avatarStyle = { backgroundColor: "darkred" };
-  const btnstyle = { margin: "20px 0", backgroundColor: "darkred" };
+  const { loginWithRedirect } = useAuth0();
   return (
-    <React.Fragment>
-      <Typography style={{ marginTop: "80px" }} variant="h3">
-        Welcome to TopStarMerch!
+    <React.Fragment className="App">
+      <Typography style={{ marginTop: "150px" }} variant="h3">
+        Welcome to TopStarMerch
+        Please Login!
       </Typography>
-
-      <Grid>
-        <Paper elevation={10} style={paperStyle}>
-          <Grid align="center">
-            <Avatar style={avatarStyle}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography style={{ marginTop: "10px" }} variant="h5">
-              Register
-            </Typography>
-          </Grid>
-          <TextField
-            label="Username"
-            placeholder="Enter username"
-            fullWidth
-            required
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <TextField
-            label="Password"
-            placeholder="Enter password"
-            type="password"
-            fullWidth
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <TextField
-            label="Address"
-            placeholder="Enter Address"
-            fullWidth
-            required
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          <TextField
-            label="Contact Number"
-            placeholder="Enter Contact Number"
-            fullWidth
-            required
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
-          />
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            style={btnstyle}
-            fullWidth
-            onClick={handleSubmit}
-            disabled={!enabled}
-          >
-            Register
-          </Button>
-          <Typography>
-            {" "}
-            Already have an account?
-            <Link href="/Login" style={{ color: "darkred" }}>
-              Sign In
-            </Link>
-          </Typography>
-        </Paper>
-      </Grid>
+      <Button
+        style={{ backgroundColor: "darkred", color: "white", marginTop: "80px"  }}
+        variant="contained"
+        size="small"
+        onClick={() => loginWithRedirect()}
+      >
+        Login 
+      </Button>
     </React.Fragment>
   );
 };

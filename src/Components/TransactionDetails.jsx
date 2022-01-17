@@ -12,43 +12,51 @@ import { useState } from "react";
 import Alert from "@material-ui/lab/Alert";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const TransactionDetails = () => {
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+  const {getAccessTokenSilently,user} = useAuth0();
+  const index = user.sub.indexOf("|")
+  const onlyId = user.sub.slice(index + 1,user.sub.length)
+  const callSecureApi = async () => {
+    const userid = onlyId;
+    try {
+      const token = await getAccessTokenSilently();
 
-  const transactionDetails = () => {
-    const userid = 1;
-    fetch(`http://localhost:8100/Transaction/${userid}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw Error("could not fetch data for that resource");
+      const response = await fetch(
+        `http://localhost:8502/Transaction/${userid}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-        return response.json();
-      })
-      .then((data) => {
-        setTimeout(() => {
-          setSuccess(true);
-          setTransactions(data);
-          setError(null);
-        }, 1000);
-        console.log(data);
+      );
 
-        setTimeout(() => {
-          setSuccess(false);
-        }, 4000);
-      })
-      .catch((err) => {
-        setError(err.message);
-        console.log(err);
+      const responseData = await response.json();
+      setTimeout(() => {
+        setSuccess(true);
+        setTransactions(responseData);
+        setError(null);
+      }, 1000);
+      console.log(responseData);
+      setTimeout(() => {
         setSuccess(false);
-      });
+      }, 4000);
+    } catch (error) {
+      setError(error.message);
+        console.log(error);
+        setSuccess(false);
+    }
   };
 
+
   React.useEffect(() => {
-    transactionDetails();
+    callSecureApi ()
   }, []);
   
   return (

@@ -11,40 +11,55 @@ import {
   CardContent,
   CardActions,
 } from "@material-ui/core/";
-
+import { useAuth0 } from "@auth0/auth0-react";
 
 const ProductDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const { getAccessTokenSilently,user } = useAuth0();
+  
+  const index = user.sub.indexOf("|")
+  const onlyId = user.sub.slice(index + 1,user.sub.length)
   const transaction = {
-    userid: 1,
-    productid: location.state.productid
-  }
-  console.log(transaction.productid)
-  console.log(transaction.userid)
+    userid: onlyId,
+    productid: location.state.productid,
+  };
+  console.log(transaction.productid);
+  console.log(transaction.userid);
 
- const handleSubmit = ()=>{
-  fetch(`http://localhost:8100/Transactions/${transaction.userid}/${location.state.productid}`, {
-     method: 'POST',
-     headers: {"Content-Type": "application/json"},
-     body: JSON.stringify(transaction)
+  const callSecureApi = async () => {
+    try {
+      const token = await getAccessTokenSilently();
 
-   }).then((response)=>{
-     console.log(response)
-   })
-   .catch((error)=>{
-     console.log(error)
-   })
-   navigate("/TransactionDetails");
- }
+      const response = await fetch(
+        `http://localhost:8502/Transactions/${transaction.userid}/${location.state.productid}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(transaction),
+        }
+      );
+
+      const responseData = await response.json();
+      console.log(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = () => {
+    callSecureApi();
+    navigate("/TransactionDetails");
+  };
 
   return (
     <React.Fragment>
       <Typography variant="h5" style={{ marginTop: "40px" }}>
         Are you sure you want to purchase this product?
       </Typography>
-      
+
       <Grid container direction="row" justifyContent="flex-start">
         <Grid item xs={1}>
           <Button
