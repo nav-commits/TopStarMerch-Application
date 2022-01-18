@@ -22,6 +22,8 @@ const TransactionDetails = () => {
   const {getAccessTokenSilently,user} = useAuth0();
   const index = user.sub.indexOf("|")
   const onlyId = user.sub.slice(index + 1,user.sub.length)
+
+  React.useEffect(() => {
   const callSecureApi = async () => {
     const userid = onlyId;
     try {
@@ -36,7 +38,7 @@ const TransactionDetails = () => {
           },
         }
       );
-
+      
       const responseData = await response.json();
       setTimeout(() => {
         setSuccess(true);
@@ -53,12 +55,9 @@ const TransactionDetails = () => {
         setSuccess(false);
     }
   };
+  callSecureApi ()
+}, []);
 
-
-  React.useEffect(() => {
-    callSecureApi ()
-  }, []);
-  
   return (
     <React.Fragment>
       <Grid container direction="row" justifyContent="flex-start">
@@ -109,8 +108,8 @@ const TransactionDetails = () => {
       >
         {transactions.length > 0
           ? transactions.map((transaction, index) => (
-              <Grid item xs={3}>
-                <Card style={{ height: "490px" }} key={index}>
+              <Grid key={index} item xs={3}>
+                <Card style={{ height: "490px" }} >
                   <CardMedia
                     image={transaction.imageurl}
                     style={{ height: "250px" }}

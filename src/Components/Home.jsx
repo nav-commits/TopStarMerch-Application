@@ -5,7 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 const Home = () => {
   const { loginWithRedirect } = useAuth0();
   return (
-    <React.Fragment className="App">
+    <div className="App">
       <Typography style={{ marginTop: "150px" }} variant="h3">
         Welcome to TopStarMerch
         Please Login!
@@ -18,7 +18,7 @@ const Home = () => {
       >
         Login 
       </Button>
-    </React.Fragment>
+    </div>
   );
 };
 
