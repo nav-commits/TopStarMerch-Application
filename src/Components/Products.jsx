@@ -22,9 +22,7 @@ const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [value, setValue] = useState("");
   const navigate = useNavigate();
-  const {getAccessTokenSilently,user } = useAuth0();
-
-  console.log(user)
+  const {getAccessTokenSilently} = useAuth0();
 
   React.useEffect(() => {
     const callSecureApi = async () => {
@@ -52,7 +50,7 @@ const Products = () => {
       }
     };
     callSecureApi();
-  }, []);
+  }, [getAccessTokenSilently]);
   
   useEffect(() => {
     setFilteredProducts(
@@ -73,12 +71,11 @@ const Products = () => {
         <TextField
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          style={{ color: "red" }}
-          size="large"
+          style={{ color: "red",width: "50%"  }}
+          size="medium"
           id="outlined-basic"
           label="Search By Product Name"
           variant="outlined"
-          style={{ width: "50%" }}
         />
       </Box>
       {error && (
@@ -95,14 +92,14 @@ const Products = () => {
         container
         spacing={4}
         direction="row"
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="flex-start"
         style={{ marginLeft: "2px", marginTop: "80px" }}
       >
         {/* data mapping will happen here */}
         {filteredProducts.map((product, index) => (
-          <Grid item xs={2}>
-            <Card key={index}>
+          <Grid key={index} item xs={2}>
+            <Card >
               <CardMedia image={product.imageurl} style={{ height: "240px" }} />
               <CardContent>
                 <Typography align="left" variant="h6" gutterBottom>
