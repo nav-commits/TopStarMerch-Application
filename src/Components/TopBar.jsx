@@ -14,9 +14,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 
-
 const TopBar = () => {
-  const { user, isAuthenticated, logout } = useAuth0();
+  const { user, isAuthenticated, logout, loginWithRedirect } = useAuth0();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -39,6 +38,26 @@ const TopBar = () => {
                 TopStarMerch{" "}
               </Link>
             </Typography>
+
+            <div
+              style={{
+                display: "flex",
+                marginLeft: "auto",
+              }}
+            >
+              {" "}
+              {!isAuthenticated && (
+                <Button
+                  style={{ color: "darkred", backgroundColor: "white",width:"100px" }}
+                  variant="contained"
+                  size="small"
+                  onClick={() => loginWithRedirect()}
+                >
+                  Login
+                </Button>
+              )}
+            </div>
+
             {isAuthenticated && (
               <div
                 style={{
@@ -76,11 +95,11 @@ const TopBar = () => {
                   TransitionComponent={Fade}
                   anchorOrigin={{
                     vertical: "bottom",
-                    horizontal: "left"
+                    horizontal: "left",
                   }}
                   transformOrigin={{
                     vertical: "top",
-                    horizontal: "left"
+                    horizontal: "left",
                   }}
                 >
                   <MenuItem onClick={handleClose}>
