@@ -12,7 +12,8 @@ import { useState } from "react";
 import Alert from "@material-ui/lab/Alert";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { useAuth0 } from "@auth0/auth0-react";
+import { Loading } from '../Components/index'
+import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 
 const TransactionDetails = () => {
   const [transactions, setTransactions] = useState([]);
@@ -141,4 +142,7 @@ const TransactionDetails = () => {
   );
 };
 
-export default TransactionDetails;
+export default withAuthenticationRequired(TransactionDetails, {
+  onRedirecting: () => <Loading />,
+});
+

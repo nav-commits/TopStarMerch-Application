@@ -11,7 +11,8 @@ import {
   CardContent,
   CardActions,
 } from "@material-ui/core/";
-import { useAuth0 } from "@auth0/auth0-react";
+import { Loading } from '../Components/index'
+import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 
 const ProductDetails = () => {
   const location = useLocation();
@@ -120,4 +121,7 @@ const ProductDetails = () => {
   );
 };
 
-export default ProductDetails;
+export default withAuthenticationRequired(ProductDetails, {
+  onRedirecting: () => <Loading />,
+});
+

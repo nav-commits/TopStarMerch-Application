@@ -13,7 +13,8 @@ import {
   TextField,
 } from "@material-ui/core/";
 import { useNavigate } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+import { Loading } from '../Components/index'
+import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -140,4 +141,6 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default withAuthenticationRequired(Products, {
+  onRedirecting: () => <Loading />,
+});
