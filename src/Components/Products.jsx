@@ -30,7 +30,7 @@ const Products = () => {
       try {
         const token = await getAccessTokenSilently();
 
-        const response = await fetch("http://localhost:8500/ProductInfo", {
+        const response = await fetch("http://localhost:8504/ProductInfo", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

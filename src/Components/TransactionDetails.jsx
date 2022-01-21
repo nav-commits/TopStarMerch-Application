@@ -31,7 +31,7 @@ const TransactionDetails = () => {
       const token = await getAccessTokenSilently();
 
       const response = await fetch(
-        `http://localhost:8502/Transaction/${userid}`,
+        `http://localhost:8506/Transaction/${userid}`,
         {
           method: "GET",
           headers: {
