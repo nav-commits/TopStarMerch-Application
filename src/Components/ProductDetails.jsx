@@ -33,7 +33,7 @@ const ProductDetails = () => {
       const token = await getAccessTokenSilently();
 
       const response = await fetch(
-        `http://localhost:8502/Transactions/${transaction.userid}/${location.state.productid}`,
+        `http://localhost:8506/Transactions/${transaction.userid}/${location.state.productid}`,
         {
           method: "POST",
           headers: {
