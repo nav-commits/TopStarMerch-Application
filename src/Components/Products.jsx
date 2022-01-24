@@ -29,7 +29,6 @@ const Products = () => {
     const callSecureApi = async () => {
       try {
         const token = await getAccessTokenSilently();
-
         const response = await fetch("http://localhost:8504/ProductInfo", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -43,6 +42,7 @@ const Products = () => {
           setLoading(false);
         }, 1000);
         setError(null);
+     
       } catch (error) {
         setError(error.message);
         console.log(error);

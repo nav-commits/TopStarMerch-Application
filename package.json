@@ -1,6 +1,6 @@
 {
   "name": "product-app",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^1.8.0",
