@@ -21,6 +21,7 @@ const ProductDetails = () => {
   
   const index = user.sub.indexOf("|")
   const onlyId = user.sub.slice(index + 1,user.sub.length)
+  
   const transaction = {
     userid: onlyId,
     productid: location.state.productid,

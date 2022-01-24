@@ -16,13 +16,11 @@ const providerConfig = {
 };
 
 ReactDOM.render(
-  <React.StrictMode>
     <Auth0Provider {...providerConfig}>
       <Router>
         <App />
       </Router>
-    </Auth0Provider>
-  </React.StrictMode>,
+    </Auth0Provider>,
   document.getElementById("root")
 );
 

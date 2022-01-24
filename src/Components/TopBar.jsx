@@ -93,14 +93,6 @@ const TopBar = () => {
                   open={open}
                   onClose={handleClose}
                   TransitionComponent={Fade}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                  }}
                 >
                   <MenuItem onClick={handleClose}>
                     {" "}
@@ -121,7 +113,6 @@ const TopBar = () => {
                     </Link>
                   </MenuItem>
                   <MenuItem
-                    onClick={handleClose}
                     style={{ cursor: "pointer" }}
                     onClick={() => logout()}
                   >

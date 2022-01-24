@@ -25,11 +25,12 @@ const TransactionDetails = () => {
   const onlyId = user.sub.slice(index + 1,user.sub.length)
 
   React.useEffect(() => {
+    let isMounted = true;
   const callSecureApi = async () => {
     const userid = onlyId;
     try {
       const token = await getAccessTokenSilently();
-
+      if(isMounted ){
       const response = await fetch(
         `http://localhost:8506/Transaction/${userid}`,
         {
@@ -50,6 +51,7 @@ const TransactionDetails = () => {
       setTimeout(() => {
         setSuccess(false);
       }, 4000);
+    }
     } catch (error) {
       setError(error.message);
         console.log(error);
@@ -57,7 +59,10 @@ const TransactionDetails = () => {
     }
   };
   callSecureApi ()
-}, []);
+  return () => {
+    isMounted = false;
+    };
+}, [getAccessTokenSilently,onlyId]);
 
   return (
     <React.Fragment>
