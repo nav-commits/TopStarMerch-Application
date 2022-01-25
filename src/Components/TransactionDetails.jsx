@@ -26,7 +26,7 @@ const TransactionDetails = () => {
 
   React.useEffect(() => {
     let isMounted = true;
-  const callSecureApi = async () => {
+  const callTransactionApi = async () => {
     const userid = onlyId;
     try {
       const token = await getAccessTokenSilently();
@@ -58,7 +58,7 @@ const TransactionDetails = () => {
         setSuccess(false);
     }
   };
-  callSecureApi ()
+  callTransactionApi ()
   return () => {
     isMounted = false;
     };
@@ -141,7 +141,7 @@ const TransactionDetails = () => {
                 </Card>
               </Grid>
             ))
-          : <Typography>No Products purchased</Typography>}
+          : <Loading />}
       </Grid>
     </React.Fragment>
   );

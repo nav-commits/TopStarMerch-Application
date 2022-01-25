@@ -29,7 +29,7 @@ const ProductDetails = () => {
   console.log(transaction.productid);
   console.log(transaction.userid);
 
-  const callSecureApi = async () => {
+  const callPostApi = async () => {
     try {
       const token = await getAccessTokenSilently();
 
@@ -45,6 +45,7 @@ const ProductDetails = () => {
       );
 
       const responseData = await response.json();
+      navigate("/TransactionDetails");
       console.log(responseData);
     } catch (error) {
       console.log(error);
@@ -52,8 +53,7 @@ const ProductDetails = () => {
   };
 
   const handleSubmit = () => {
-    callSecureApi();
-    navigate("/TransactionDetails");
+    callPostApi();
   };
 
   return (
